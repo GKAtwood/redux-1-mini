@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import store from './store';
+import store, {INCREMENT, DECREMENT} from './store';
 
 
 class Counter extends Component {
@@ -9,6 +9,22 @@ class Counter extends Component {
       store: store.getState()
     }
   }
+
+  componentDidMount(){
+    store.subscribe(()=>{
+      this.setState({
+        store: store.getState()
+      })
+    })
+  }
+
+  increment(amount){
+    store.dispatch({amount, type: INCREMENT})
+  }
+  decrement(amount){
+    store.dispatch({amount, type: DECREMENT})
+  }
+
   render() {
     const {
       currentValue
@@ -20,25 +36,25 @@ class Counter extends Component {
           <div className="counter__button-wrapper">
             <button
               className="counter__button increment-one"
-              onClick={() => null}
+              onClick={() =>this.increment(1)}
             >
               +1
             </button>
             <button
               className="counter__button increment-five"
-              onClick={() => null}
+              onClick={() => this.increment(5)}
             >
               +5
             </button>
             <button
               className="counter__button decrement-one"
-              onClick={() => null}
+              onClick={() => this.decrement(1)}
             >
               -1
             </button>
             <button
               className="counter__button decrement-five"
-              onClick={() => null}
+              onClick={() => this.decrement(5)}
             >
               -5
             </button>
