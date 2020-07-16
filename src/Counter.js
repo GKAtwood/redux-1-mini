@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import store, {INCREMENT, DECREMENT} from './store';
+import store, {INCREMENT, DECREMENT, UNDO, REDO} from './store';
 
 
 class Counter extends Component {
@@ -24,10 +24,19 @@ class Counter extends Component {
   decrement(amount){
     store.dispatch({amount, type: DECREMENT})
   }
+  undo(){
+    store.dispatch({type: UNDO})
+  }
+
+  redo(){
+    store.dispatch({type: REDO})
+  }
 
   render() {
     const {
-      currentValue
+      currentValue,
+      futureValues,
+      previousValues
     } = this.state.store;
     return (
       <div className="app">
@@ -61,15 +70,15 @@ class Counter extends Component {
             <br />
             <button
               className="counter__button undo"
-              disabled={true}
-              onClick={() => null}
+              disabled={previousValues.length === 0}
+              onClick={this.undo}
             >
               Undo
             </button>
             <button
               className="counter__button redo"
-              disabled={true}
-              onClick={() => null}
+              disabled={futureValues.length === 0}
+              onClick={this.redo}
             >
               Redo
             </button>
